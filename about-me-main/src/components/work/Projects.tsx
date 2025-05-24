@@ -1,5 +1,3 @@
-"use client";
-
 import { Column, Grid, Heading, Flex, Text } from "@/once-ui/components";
 import { ProjectCard } from "@/components";
 import { useState, useMemo, useEffect } from "react";
@@ -269,100 +267,71 @@ export function Projects({ initialCategory, initialPage, initialSearchTerm }: Pr
     search: string;
   }) => {
     const params = new URLSearchParams();
-    if (category && category !== "all") params.set("category", category);
-    if (page > 1) params.set("page", page.toString());
+    if (category !== "all") params.set("category", category);
+    if (page !== 1) params.set("page", String(page));
     if (search) params.set("search", search);
-    router.push(`/work?${params.toString()}`);
+    router.push(`/?${params.toString()}`);
   };
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearchTerm(searchInput);
-    setCurrentPage(1);
-    updateUrl({ category: activeCategory, page: 1, search: searchInput });
-  };
-
-  const gridColumns = activeCategory === "collections" ? "1" : "2";
 
   return (
-    <Column fillWidth gap="xl" paddingX="l">
-      {/* Search */}
-      <Flex horizontal="center" fillWidth>
-        <form onSubmit={handleSearchSubmit} className="w-full max-w-lg">
-          <input
-            type="text"
-            placeholder="Search by title, type, description..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-          />
-        </form>
+    <section>
+      <Heading as="h2">Explore Projects</Heading>
+      <Flex>
+        <select
+          value={activeCategory}
+          onChange={(e) => {
+            setActiveCategory(e.target.value);
+            setCurrentPage(1);
+            updateUrl({ category: e.target.value, page: 1, search: searchInput });
+          }}
+        >
+          {allCategories.map((category) => (
+            <option key={category} value={category.toLowerCase()}>
+              {category}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="Search projects"
+        />
+        <button
+          onClick={() => {
+            setSearchTerm(searchInput);
+            setCurrentPage(1);
+            updateUrl({ category: activeCategory, page: 1, search: searchInput });
+          }}
+        >
+          Search
+        </button>
       </Flex>
-
-      {/* Filters */}
-      <Flex gap="m" wrap horizontal="center">
-        {allCategories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => {
-              const catLower = cat.toLowerCase();
-              setActiveCategory(catLower);
-              setCurrentPage(1);
-              updateUrl({ category: catLower, page: 1, search: searchTerm });
-            }}
-            className={`px-4 py-2 rounded-full border ${
-              activeCategory === cat.toLowerCase()
-                ? "border-brand-solid-strong text-brand-solid-strong bg-brand-solid-weak"
-                : "border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300"
-            } hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors`}
-          >
-            {cat}
-          </button>
+      <Grid>
+        {filteredAndPaginatedProjects.projects.map((project) => (
+          <ProjectCard key={project.slug} {...project} />
         ))}
+      </Grid>
+      <Flex style={{ justifyContent: "center" }}>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => {
+            setCurrentPage(currentPage - 1);
+            updateUrl({ category: activeCategory, page: currentPage - 1, search: searchInput });
+          }}
+        >
+          Previous
+        </button>
+        <button
+          disabled={currentPage === filteredAndPaginatedProjects.totalPages}
+          onClick={() => {
+            setCurrentPage(currentPage + 1);
+            updateUrl({ category: activeCategory, page: currentPage + 1, search: searchInput });
+          }}
+        >
+          Next
+        </button>
       </Flex>
-
-      {/* Project Cards */}
-      {filteredAndPaginatedProjects.projects.length > 0 ? (
-        <Grid columns={gridColumns} mobileColumns="1" gap="l">
-          {filteredAndPaginatedProjects.projects.map((project) => (
-            <ProjectCard
-              key={project.slug}
-              href={project.href}
-              images={project.images}
-              avatars={project.avatars}
-              link={project.link}
-            />
-          ))}
-        </Grid>
-      ) : (
-        <Flex horizontal="center" paddingY="xl">
-          <Text variant="body-default-m" onBackground="neutral-weak">
-            No projects found for the current filters.
-          </Text>
-        </Flex>
-      )}
-
-      {/* Pagination */}
-      {filteredAndPaginatedProjects.totalPages > 1 && (
-        <Flex horizontal="center" gap="m" marginTop="l">
-          {Array.from({ length: filteredAndPaginatedProjects.totalPages }, (_, i) => i + 1).map((pageNum) => (
-            <button
-              key={pageNum}
-              onClick={() => {
-                setCurrentPage(pageNum);
-                updateUrl({ category: activeCategory, page: pageNum, search: searchTerm });
-              }}
-              className={`px-4 py-2 rounded-md ${
-                currentPage === pageNum
-                  ? "bg-brand-solid-strong text-white"
-                  : "bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200"
-              } hover:bg-brand-solid-medium dark:hover:bg-neutral-600 transition-colors`}
-            >
-              {pageNum}
-            </button>
-          ))}
-        </Flex>
-      )}
-    </Column>
+    </section>
   );
 }

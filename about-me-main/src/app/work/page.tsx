@@ -24,7 +24,8 @@ interface WorkPageProps {
   };
 }
 
-export default function Work({ searchParams }: WorkPageProps) {
+// Ensure that WorkPageProps follows the correct structure expected by Next.js
+const Work = ({ searchParams }: WorkPageProps) => {
   // Extract and parse search parameters for the Projects component
   const category = searchParams.category || 'all'; // Default to 'all' if no category
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
@@ -96,11 +97,9 @@ export default function Work({ searchParams }: WorkPageProps) {
         <Text variant="body-default-m" className="text-center max-w-xl text-neutral-600 dark:text-neutral-300 px-4">
           Every experience shapes my journey. Connect with me to share your own passions!
         </Text>
-        {/* Example: Add a simple button/link here */}
-        {/* <Link href="/contact" className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors">
-          Get in Touch
-        </Link> */}
       </Flex>
     </Column>
   );
-}
+};
+
+export default Work;
