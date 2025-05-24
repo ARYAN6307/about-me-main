@@ -2,9 +2,18 @@ import { Column, Heading, Flex, Text } from "@/once-ui/components";
 import { baseURL } from "@/app/resources";
 import { about, person, work } from "@/app/resources/content";
 import { Meta, Schema } from "@/once-ui/modules";
-import { Projects } from "@/components/work/Projects"; // Import the client component
+import { Projects } from "@/components/work/Projects"; // Client component
 
-// Metadata generation runs on the server
+// ✅ Define the prop type for this server component
+interface WorkPageProps {
+  searchParams?: {
+    category?: string;
+    page?: string;
+    search?: string;
+  };
+}
+
+// ✅ Metadata generation runs on the server
 export async function generateMetadata() {
   return Meta.generate({
     title: work.title,
@@ -15,18 +24,20 @@ export async function generateMetadata() {
   });
 }
 
-// Server-side component that handles the query parameters
-const Work = ({ searchParams }: { searchParams: { category: string; page: string; search: string } }) => {
-  const { category = "all", page = "1", search = "" } = searchParams;
+// ✅ Server component with proper query param handling
+const Work = ({ searchParams }: WorkPageProps) => {
+  const category = searchParams?.category ?? "all";
+  const page = parseInt(searchParams?.page ?? "1", 10);
+  const search = searchParams?.search ?? "";
 
   return (
     <Column
       fillWidth
-      gap="xl" // Increased gap between main sections
+      gap="xl"
       marginBottom="40"
-      paddingX="l" // Horizontal padding for the entire page content
+      paddingX="l"
     >
-      {/* Schema Markup for SEO */}
+      {/* SEO Schema */}
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -41,13 +52,13 @@ const Work = ({ searchParams }: { searchParams: { category: string; page: string
         }}
       />
 
-      {/* Hero Section for the Work Page */}
+      {/* Hero Section */}
       <Column
         fillWidth
         horizontal="center"
-        paddingY="xl" // Generous vertical padding for a spacious feel
+        paddingY="xl"
         className="bg-gradient-to-br from-green-500 to-blue-600 dark:from-neutral-800 dark:to-neutral-950 text-white rounded-xl shadow-lg"
-        style={{ borderRadius: '2rem' }} // More pronounced rounded corners
+        style={{ borderRadius: '2rem' }}
       >
         <Heading as="h1" wrap="balance" variant="display-strong-xl" className="text-center">
           My Diverse Portfolio
@@ -57,20 +68,23 @@ const Work = ({ searchParams }: { searchParams: { category: string; page: string
         </Text>
       </Column>
 
-      {/* Main Work Projects Section - This renders the client component */}
+      {/* Projects Section */}
       <Column fillWidth flex={1} gap="l">
-        <Heading as="h2" variant="heading-strong-xl" className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 dark:from-yellow-400 dark:to-orange-500">
+        <Heading
+          as="h2"
+          variant="heading-strong-xl"
+          className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 dark:from-yellow-400 dark:to-orange-500"
+        >
           My Hobbies & Collections
         </Heading>
-        {/* Pass the search params to the Projects client component */}
         <Projects
           initialCategory={category}
-          initialPage={parseInt(page, 10)}
+          initialPage={page}
           initialSearchTerm={search}
         />
       </Column>
 
-      {/* Footer / Call to Action Section - Consistent with LifeExperiences */}
+      {/* Call to Action Section */}
       <Flex
         fillWidth
         horizontal="center"
