@@ -5,12 +5,8 @@ import { about, person, work } from "@/app/resources/content";
 import { Meta, Schema } from "@/once-ui/modules";
 import { Projects } from "@/components/work/Projects"; // Client component
 
-// ✅ Redefined prop type for server component pages to align with Next.js's PageProps
-interface WorkPageProps {
-  // Use Record<string, string | string[] | undefined> for searchParams
-  // This is the standard and most robust way to type searchParams in Next.js App Router
-  searchParams: Record<string, string | string[] | undefined>;
-}
+// ✅ Removed WorkPageProps interface to avoid type conflict with Next.js internal PageProps.
+// ✅ Directly type searchParams in the component function signature.
 
 // ✅ Metadata generation runs on the server
 export async function generateMetadata() {
@@ -24,10 +20,13 @@ export async function generateMetadata() {
 }
 
 // ✅ Server component with proper query param handling
-const Work = ({ searchParams }: WorkPageProps) => {
-  // Ensure we safely handle potential array values for search parameters if needed,
-  // though for category, page, and search, a single string is usually expected.
-  // We'll cast to string if it could be an array, or just use the first element.
+// Directly type searchParams here to align with Next.js's expected PageProps structure
+const Work = ({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) => {
+  // Helper function to safely extract a single string param value
   const getParam = (param: string | string[] | undefined): string | undefined => {
     if (Array.isArray(param)) {
       return param[0]; // Take the first value if it's an array
