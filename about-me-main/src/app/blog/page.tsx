@@ -123,8 +123,9 @@ export default function LifeExperiences() {
         style={{ borderRadius: '2rem' }} // More pronounced rounded corners
       >
         <Heading as="h1" wrap="balance" variant="display-strong-xl" className="text-center">
-          Journey Through My Life's Tapestry
-        </Heading>
+  Journey Through My Life&apos;s Tapestry
+</Heading>
+
         <Text variant="body-default-m" onBackground="neutral-weak" className="mt-4 text-center max-w-2xl px-4">
           A curated collection of cherished moments, from cinematic adventures to culinary delights and thrilling personal pursuits.
         </Text>

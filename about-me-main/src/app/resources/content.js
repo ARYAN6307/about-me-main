@@ -24,7 +24,6 @@ const funFacts = {
   ],
 };
 
-
 const person = {
   firstName: "Aryan",
   lastName: "Pandey",
@@ -40,7 +39,7 @@ const person = {
 
 const newsletter = {
   display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
+  title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
   description: (
     <>
       I occasionally share insights about my life journey, school, college, and personal projects.
@@ -77,8 +76,8 @@ const home = {
   path: "/",
   image: "/images/og/home.jpg",
   label: "Home",
-  title: `${person.name}'s Life Journey`,
-  description: `A portfolio and timeline website showcasing Aryan's journey from school to present`,
+  title: `${person.name}&apos;s Life Journey`,
+  description: `A portfolio and timeline website showcasing Aryan&apos;s journey from school to present`,
   headline: <>Exploring the world, one experience at a time</>,
   featured: {
     display: true,
@@ -87,7 +86,7 @@ const home = {
   },
   subline: (
     <>
-      I'm Aryan, a student and developer, exploring new technologies and building meaningful projects.
+      I&apos;m Aryan, a student and developer, exploring new technologies and building meaningful projects.
       <br /> On this website, I document my experiences, from school to family dinners and everything in between.
     </>
   ),
@@ -114,7 +113,7 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Aryan is an Engineer, role Programmer Analyst with a passion for coding and technology. His goal is to share his experiences and learnings with the world, including his journey through education, places he's lived, and memorable moments with family and friends.
+        Aryan is an Engineer, role Programmer Analyst with a passion for coding and technology. His goal is to share his experiences and learnings with the world, including his journey through education, places he&apos;s lived, and memorable moments with family and friends.
       </>
     ),
   },
@@ -155,27 +154,26 @@ const about = {
         images: [],
       },
       {
-  company: "GCP Developer",
-  timeframe: "2023 - Present",
-  role: "GCP Developer",
-  achievements: [
-    <>
-      Completed multiple modules on Google Cloud Platform (GCP) via Qwiklabs Arcade and earned prizes for outstanding performance.
-    </>,
-    <>
-      Gained hands-on experience with various GCP tools and services, applying them in real-world scenarios.
-    </>,
-  ],
-  images: [
-    {
-      src: "/images/projects/project-01/cover-01.jpg",
-      alt: "GCP Development Project",
-      width: 16,
-      height: 9,
-    },
-  ],
-}
-
+        company: "GCP Developer",
+        timeframe: "2023 - Present",
+        role: "GCP Developer",
+        achievements: [
+          <>
+            Completed multiple modules on Google Cloud Platform (GCP) via Qwiklabs Arcade and earned prizes for outstanding performance.
+          </>,
+          <>
+            Gained hands-on experience with various GCP tools and services, applying them in real-world scenarios.
+          </>,
+        ],
+        images: [
+          {
+            src: "/images/projects/project-01/cover-01.jpg",
+            alt: "GCP Development Project",
+            width: 16,
+            height: 9,
+          },
+        ],
+      },
     ],
   },
   studies: {
@@ -209,7 +207,7 @@ const about = {
       },
     ],
   },
-   lifeTimeline, // integrated
+  lifeTimeline, // integrated
   funFacts, 
 };
 
@@ -245,8 +243,5 @@ const gallery = {
     },
   ],
 };
-
-
-
 
 export { person, social, newsletter, home, about, blog, work, gallery, funFacts, lifeTimeline };
