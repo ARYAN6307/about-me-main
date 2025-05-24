@@ -1,3 +1,4 @@
+'use client';
 import { Column, Grid, Heading, Flex, Text } from "@/once-ui/components";
 import { ProjectCard } from "@/components";
 import { useState, useMemo, useEffect } from "react";
@@ -212,13 +213,13 @@ export function Projects({ initialCategory, initialPage, initialSearchTerm }: Pr
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
-  const [searchInput, setSearchInput] = useState(initialSearchTerm);
+  const [searchInput, setSearchInput] = useState(initialSearchTerm || "");  // Ensuring default value
 
   useEffect(() => {
     setActiveCategory(searchParams.get("category") || "all");
     setCurrentPage(parseInt(searchParams.get("page") || "1", 10));
     setSearchTerm(searchParams.get("search") || "");
-    setSearchInput(searchParams.get("search") || "");
+    setSearchInput(searchParams.get("search") || "");  // Ensuring default value
   }, [searchParams]);
 
   const filteredAndPaginatedProjects = useMemo(() => {
@@ -257,15 +258,7 @@ export function Projects({ initialCategory, initialPage, initialSearchTerm }: Pr
     return ["All", ...Array.from(unique)];
   }, []);
 
-  const updateUrl = ({
-    category,
-    page,
-    search,
-  }: {
-    category: string;
-    page: number;
-    search: string;
-  }) => {
+  const updateUrl = ({ category, page, search }: { category: string; page: number; search: string }) => {
     const params = new URLSearchParams();
     if (category !== "all") params.set("category", category);
     if (page !== 1) params.set("page", String(page));

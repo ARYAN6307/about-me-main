@@ -15,28 +15,10 @@ export async function generateMetadata() {
   });
 }
 
-// Define the expected searchParams structure
-interface WorkPageProps {
-  category: string;
-  page: number;
-  searchTerm: string;
-}
+// Server-side component that handles the query parameters
+const Work = ({ searchParams }: { searchParams: { category: string; page: string; search: string } }) => {
+  const { category = "all", page = "1", search = "" } = searchParams;
 
-// Server-side function to retrieve the searchParams
-export async function getServerSideProps({ query }: { query: any }) {
-  const { category = 'all', page = '1', search = '' } = query;
-
-  return {
-    props: {
-      category,
-      page: parseInt(page, 10),
-      searchTerm: search,
-    },
-  };
-}
-
-// The Work component that will receive searchParams as props
-const Work = ({ category, page, searchTerm }: WorkPageProps) => {
   return (
     <Column
       fillWidth
@@ -83,8 +65,8 @@ const Work = ({ category, page, searchTerm }: WorkPageProps) => {
         {/* Pass the search params to the Projects client component */}
         <Projects
           initialCategory={category}
-          initialPage={page}
-          initialSearchTerm={searchTerm}
+          initialPage={parseInt(page, 10)}
+          initialSearchTerm={search}
         />
       </Column>
 
