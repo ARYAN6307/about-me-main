@@ -1,15 +1,18 @@
+// src/app/work/page.tsx
 import { Column, Heading, Flex, Text } from "@/once-ui/components";
 import { baseURL } from "@/app/resources";
 import { about, person, work } from "@/app/resources/content";
 import { Meta, Schema } from "@/once-ui/modules";
 import { Projects } from "@/components/work/Projects"; // Client component
 
-// ✅ Define the prop type for this server component
+// ✅ Corrected prop type for server component pages
 interface WorkPageProps {
-  searchParams?: {
+  searchParams: { // Make searchParams required
     category?: string;
     page?: string;
     search?: string;
+    // Add an index signature if you expect other arbitrary search params
+    // [key: string]: string | string[] | undefined;
   };
 }
 
@@ -26,9 +29,9 @@ export async function generateMetadata() {
 
 // ✅ Server component with proper query param handling
 const Work = ({ searchParams }: WorkPageProps) => {
-  const category = searchParams?.category ?? "all";
-  const page = parseInt(searchParams?.page ?? "1", 10);
-  const search = searchParams?.search ?? "";
+  const category = searchParams.category ?? "all"; // Use .category directly
+  const page = parseInt(searchParams.page ?? "1", 10); // Use .page directly
+  const search = searchParams.search ?? ""; // Use .search directly
 
   return (
     <Column
