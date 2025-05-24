@@ -5,15 +5,11 @@ import { about, person, work } from "@/app/resources/content";
 import { Meta, Schema } from "@/once-ui/modules";
 import { Projects } from "@/components/work/Projects"; // Client component
 
-// ✅ Corrected prop type for server component pages
+// ✅ Redefined prop type for server component pages to align with Next.js's PageProps
 interface WorkPageProps {
-  searchParams: { // Make searchParams required
-    category?: string;
-    page?: string;
-    search?: string;
-    // Add an index signature if you expect other arbitrary search params
-    // [key: string]: string | string[] | undefined;
-  };
+  // Use Record<string, string | string[] | undefined> for searchParams
+  // This is the standard and most robust way to type searchParams in Next.js App Router
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 // ✅ Metadata generation runs on the server
@@ -29,10 +25,19 @@ export async function generateMetadata() {
 
 // ✅ Server component with proper query param handling
 const Work = ({ searchParams }: WorkPageProps) => {
-  const category = searchParams.category ?? "all";
-  // FIX: Correctly parse the page string to an integer
-  const page = parseInt(searchParams.page ?? "1", 10);
-  const search = searchParams.search ?? "";
+  // Ensure we safely handle potential array values for search parameters if needed,
+  // though for category, page, and search, a single string is usually expected.
+  // We'll cast to string if it could be an array, or just use the first element.
+  const getParam = (param: string | string[] | undefined): string | undefined => {
+    if (Array.isArray(param)) {
+      return param[0]; // Take the first value if it's an array
+    }
+    return param;
+  };
+
+  const category = getParam(searchParams.category) ?? "all";
+  const page = parseInt(getParam(searchParams.page) ?? "1", 10);
+  const search = getParam(searchParams.search) ?? "";
 
   return (
     <Column
@@ -83,7 +88,7 @@ const Work = ({ searchParams }: WorkPageProps) => {
         </Heading>
         <Projects
           initialCategory={category}
-          initialPage={page} // This will now correctly pass a number
+          initialPage={page}
           initialSearchTerm={search}
         />
       </Column>
