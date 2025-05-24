@@ -139,7 +139,7 @@ export default function LifeExperiences() {
               {experience.slug.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
             </Heading>
 
-            {/* Changed to columns="1" to ensure ProjectCard takes full available width */}
+            {/* Grid Layout: Adjust to be more responsive with mobileColumns */}
             <Grid columns="1" mobileColumns="1" gap="l">
                 <ProjectCard
                   href={experience.href}
