@@ -15,22 +15,28 @@ export async function generateMetadata() {
   });
 }
 
-// WorkPageProps should define the expected searchParams structure
+// Define the expected searchParams structure
 interface WorkPageProps {
-  searchParams: {
-    category?: string;
-    page?: string;
-    search?: string;
+  category: string;
+  page: number;
+  searchTerm: string;
+}
+
+// Server-side function to retrieve the searchParams
+export async function getServerSideProps({ query }: { query: any }) {
+  const { category = 'all', page = '1', search = '' } = query;
+
+  return {
+    props: {
+      category,
+      page: parseInt(page, 10),
+      searchTerm: search,
+    },
   };
 }
 
-// Ensure that WorkPageProps follows the correct structure expected by Next.js
-const Work = ({ searchParams }: WorkPageProps) => {
-  // Extract and parse search parameters for the Projects component
-  const category = searchParams.category || 'all'; // Default to 'all' if no category
-  const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
-  const searchTerm = searchParams.search || ''; // Default to empty string
-
+// The Work component that will receive searchParams as props
+const Work = ({ category, page, searchTerm }: WorkPageProps) => {
   return (
     <Column
       fillWidth
