@@ -30,7 +30,7 @@ export async function generateMetadata() {
 // ✅ Server component with proper query param handling
 const Work = ({ searchParams }: WorkPageProps) => {
   const category = searchParams.category ?? "all"; // Use .category directly
-  const page = parseInt(searchParams.page ?? "1", 10); // Use .page directly
+  const page = (searchParams.page ?? "1", "10"); // Use .page directly
   const search = searchParams.search ?? ""; // Use .search directly
 
   return (
@@ -82,7 +82,7 @@ const Work = ({ searchParams }: WorkPageProps) => {
         </Heading>
         <Projects
           initialCategory={category}
-          initialPage={page}
+          initialPage={parseInt(page)}
           initialSearchTerm={search}
         />
       </Column>
